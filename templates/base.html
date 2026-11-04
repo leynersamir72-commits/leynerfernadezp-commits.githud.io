@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Provincia de Los Ríos{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+  <a class="logo" href="{{ url_for('index') }}">Los Ríos – Ecuador</a>
+  <nav>
+    <a href="{{ url_for('index') }}">Inicio</a>
+    <a href="{{ url_for('autoridades') }}">Autoridades</a>
+    <div class="dropdown">
+      <span>Cantones ▾</span>
+      <div class="menu">
+        {% for slug, c in cantones_menu.items() %}
+          <a href="{{ url_for('canton', slug=slug) }}">{{ c.nombre }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </nav>
+</header>
+{% block hero %}{% endblock %}
+<main>{% block content %}{% endblock %}</main>
+<footer>Tarea de programación · Provincia de Los Ríos, Ecuador</footer>
+</body>
+</html>

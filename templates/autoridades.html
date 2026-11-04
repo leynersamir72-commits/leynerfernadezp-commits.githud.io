@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Autoridades – Los Ríos{% endblock %}
+{% block content %}
+<h1>Autoridades de la provincia</h1>
+{% for a in autoridades %}
+<section class="card row">
+  <img class="portrait" src="{{ img(a.foto, a.nombre) }}" alt="{{ a.nombre }}">
+  <div>
+    <h2>{{ a.cargo }}</h2>
+    <h3>{{ a.nombre }}</h3>
+    <p>{{ a.bio }}</p>
+    <p class="nota">{{ a.nota }}</p>
+  </div>
+</section>
+{% endfor %}
+{% endblock %}

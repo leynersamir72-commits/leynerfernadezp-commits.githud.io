@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block hero %}
+<section class="hero">
+  <h1>Provincia de {{ p.nombre }}</h1>
+  <p>«Tierra de ríos» · Capital: {{ p.capital }}</p>
+</section>
+{% endblock %}
+{% block content %}
+<section class="card row">
+  <img class="flag" src="{{ img(p.bandera, 'Bandera de Los Ríos') }}" alt="Bandera de Los Ríos">
+  <div>
+    <h2>Descripción</h2>
+    <p>{{ p.descripcion }}</p>
+  </div>
+</section>
+
+<h2>Datos clave</h2>
+<div class="grid">
+  {% for k, v in p.datos %}
+    <div class="stat"><span>{{ k }}</span><b>{{ v }}</b></div>
+  {% endfor %}
+  <div class="stat"><span>Población</span><b>{{ p.poblacion }}</b></div>
+</div>
+
+<h2>Historia</h2>
+<p class="card">{{ p.historia }}</p>
+
+<h2>Economía y geografía</h2>
+<div class="grid2">
+  <div class="card"><h3>Economía</h3><p>{{ p.economia }}</p></div>
+  <div class="card"><h3>Geografía y clima</h3><p>{{ p.geografia }}</p></div>
+</div>
+
+<h2>Qué ver y hacer</h2>
+<div class="grid">
+  {% for t, d in p.turismo_general %}
+    <div class="card"><h3>{{ t }}</h3><p>{{ d }}</p></div>
+  {% endfor %}
+</div>
+
+<h2>Comida típica</h2>
+<ul class="chips">{% for x in p.gastronomia_general %}<li>{{ x }}</li>{% endfor %}</ul>
+
+<h2>Autoridades</h2>
+<p><a class="btn" href="{{ url_for('autoridades') }}">Ver prefecto y gobernador con su biografía</a></p>
+
+<h2>Mapa de la provincia</h2>
+{% if foto_propia(p.mapa) %}
+<img class="wide" src="{{ img(p.mapa, 'Mapa de Los Ríos') }}" alt="Mapa de Los Ríos">
+{% else %}
+<iframe class="mapa" loading="lazy" src="https://www.google.com/maps?q={{ p.mapa_q|urlencode }}&output=embed"></iframe>
+{% endif %}
+
+<h2>Cantones</h2>
+<div class="grid">
+  {% for slug, c in cantones.items() %}
+    <a class="tile" href="{{ url_for('canton', slug=slug) }}">
+      <img src="{{ img(slug + '.jpg', c.nombre) }}" alt="{{ c.nombre }}">
+      <b>{{ c.nombre }}</b><small>{{ c.lema }}</small>
+    </a>
+  {% endfor %}
+</div>
+{% endblock %}

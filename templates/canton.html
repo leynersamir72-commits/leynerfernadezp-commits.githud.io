@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{{ c.nombre }} – Los Ríos{% endblock %}
+{% block hero %}
+<section class="hero small"><h1>Cantón {{ c.nombre }}</h1><p>{{ c.lema or "" }}</p></section>
+{% endblock %}
+{% block content %}
+{% set falta = "Por completar" %}
+<img class="wide" src="{{ img(slug + '.jpg', c.nombre) }}" alt="{{ c.nombre }}">
+
+<div class="grid">
+  <div class="stat"><span>Alcalde</span><b>{{ c.alcalde or falta }}</b></div>
+  <div class="stat"><span>Población</span><b>{{ c.poblacion or falta }}</b></div>
+  <div class="stat"><span>Parroquias</span><b>{{ c.parroquias|length or falta }}</b></div>
+</div>
+
+<h2>Descripción</h2><p class="card">{{ c.descripcion or falta }}</p>
+<h2>Reseña</h2><p class="card">{{ c.resena or falta }}</p>
+{% if c.dato_curioso %}<p class="nota">💡 Dato curioso: {{ c.dato_curioso }}</p>{% endif %}
+
+<h2>Parroquias</h2>
+{% if c.parroquias %}<ul class="chips">{% for x in c.parroquias %}<li>{{ x }}</li>{% endfor %}</ul>{% else %}<p>{{ falta }}</p>{% endif %}
+
+<h2>Platos típicos</h2>
+{% if c.platos %}<ul class="chips">{% for x in c.platos %}<li>{{ x }}</li>{% endfor %}</ul>{% else %}<p>{{ falta }}</p>{% endif %}
+
+<h2>Lugares turísticos</h2>
+{% if c.turismo %}
+<div class="grid2">{% for lugar, porque in c.turismo %}
+  <div class="card"><h3>{{ lugar }}</h3><p><b>¿Por qué visitarlo?</b> {{ porque }}</p></div>
+{% endfor %}</div>{% else %}<p>{{ falta }}</p>{% endif %}
+
+<h2>Hoteles donde alojarse</h2>
+{% if c.hoteles %}<ul class="chips">{% for x in c.hoteles %}<li>{{ x }}</li>{% endfor %}</ul>{% else %}<p>Aún no hay hoteles en la lista.</p>{% endif %}
+<p><a class="btn" href="{{ c.hoteles_url }}" target="_blank" rel="noopener">Buscar hoteles en {{ c.nombre }} (Google Maps)</a></p>
+
+<h2>Mapa</h2>
+{% if foto_propia('mapa_' + slug) %}
+<img class="wide" src="{{ img('mapa_' + slug, 'Mapa de ' + c.nombre) }}" alt="Mapa de {{ c.nombre }}">
+{% else %}
+<iframe class="mapa" loading="lazy" src="https://www.google.com/maps?q={{ c.mapa_q|urlencode }}&output=embed"></iframe>
+{% endif %}
+<p><a class="btn" href="{{ url_for('index') }}">← Volver al inicio</a></p>
+{% endblock %}
